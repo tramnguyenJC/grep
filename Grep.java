@@ -58,20 +58,27 @@ public class Grep implements Runnable {
 	}
 
 	private void processFiles(ArrayList<File> files) {
-		if (numThreads > files.size()) {
-			numThreads = files.size();
-		}
+		int[] startIndices = new int[numThreads];
+		int[] endIndices = new int[numThreads];
 		int blockSize = files.size()/numThreads;
+		int remainder = files.size()%numThreads;
+		int id = 0;
+		while (id < remainder) {
+			startIndices[id] = id*(blockSize + 1);
+			endIndices[id] = (id + 1)*(blockSize + 1);
+			id++;
+		}
+		while (id < numThreads) {
+			startIndices[id] = remainder + (id*blockSize);
+			endIndices[id] = remainder + (id + 1)*blockSize;
+			id++;
+		}
 		try {
 			Thread[] threads = new Thread[numThreads];
 			for (int threadId = 0; threadId < numThreads; threadId++) {
-				int start = threadId*blockSize;
-				int end = (threadId + 1)*blockSize;
-				if (threadId == numThreads - 1) {
-					end = files.size();
-				}
 				Thread thread = new Thread(
-					new LineProcessingThread(files, pattern, start, end)); 
+					new LineProcessingThread(files, pattern,
+						startIndices[threadId], endIndices[threadId])); 
 				threads[threadId] = thread;
             	thread.start(); 
 			}
