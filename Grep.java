@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.lang.*;
+import java.util.ArrayList;
 
 @Command(name = "grep", mixinStandardHelpOptions = true, version = "Grep 1.0")
 public class Grep implements Runnable {
@@ -38,29 +39,61 @@ public class Grep implements Runnable {
 	@Parameters(index = "0", paramLabel = "PATTERN", description = "Pattern to find.")
 	private String pattern;
 
-	@Parameters(index = "1..*", paramLabel = "FILE", description = "File(s) to process.")
-	private File[] inputFiles;
+	@Parameters(index = "1..*", paramLabel = "FILE", description = "File(s) or folder(s) to process.")
+	private File[] inputFilesOrDirectories;
 
-	public void run() {
-		long startTime = System.currentTimeMillis();
-		LinkedBlockingQueue<Line> queue = new LinkedBlockingQueue<Line>();
+	private void getFilesToProcess(File file, ArrayList<File> filesToProcess) {
+		if (file.isFile()) {
+			filesToProcess.add(file);
+			return;
+		}
+		if (!file.isDirectory()) {
+			return;
+		}
+		// file is a directory
+		File[] filesList = file.listFiles();
+		for (File fileInDirectory : filesList) {
+			getFilesToProcess(fileInDirectory, filesToProcess);
+		}
+	}
+
+	private void processFiles(ArrayList<File> files) {
+		if (numThreads > files.size()) {
+			numThreads = files.size();
+		}
+		int blockSize = files.size()/numThreads;
 		try {
-			// Create a thread pool for the IOThread plus the processing thread(s)
-			ExecutorService service = Executors.newFixedThreadPool(numThreads + 1);
-			for (int i = 0; i < numThreads; i++) {
-				service.submit(new LineProcessingThread(queue, pattern));
+			Thread[] threads = new Thread[numThreads];
+			for (int threadId = 0; threadId < numThreads; threadId++) {
+				int start = threadId*blockSize;
+				int end = (threadId + 1)*blockSize;
+				if (threadId == numThreads - 1) {
+					end = files.size();
+				}
+				Thread thread = new Thread(
+					new LineProcessingThread(files, pattern, start, end)); 
+				threads[threadId] = thread;
+            	thread.start(); 
 			}
-
-	    	// Wait til IOThread completes
-			service.submit(new IOThread(queue, inputFiles)).get();
-	    	service.shutdownNow();  // interrupt any LineProcessingThread
-
-	    	// Wait til LineProcessingThread terminate
-	    	service.awaitTermination(365, TimeUnit.DAYS);
+			for (int threadId = 0; threadId < numThreads; threadId++) {
+				threads[threadId].join();
+			}
 	  	} catch (Exception e) {
 	  		e.printStackTrace();
 	  	}
+	}
+
+	public void run() {
+		long startTime = System.currentTimeMillis();
+		ArrayList<File> filesToProcess = new ArrayList<>();
+		// Populate 'filesToProcess' with all files in directory.
+		for (File file : inputFilesOrDirectories) {
+			getFilesToProcess(file, filesToProcess);
+		}
+		processFiles(filesToProcess);
+
 	  	long endTime = System.currentTimeMillis();
+	  	System.out.println("The number of file(s) to process: " + filesToProcess.size());
 	  	System.out.println("The number of processors: " + numThreads);
 	  	System.out.println("The time it takes to process file(s) (in milliseconds): " 
 	  		+ (endTime - startTime));
