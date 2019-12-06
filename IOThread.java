@@ -24,7 +24,7 @@ public class IOThread implements Runnable {
 				String line;
 				while ((line = br.readLine()) != null) {
 					lineCount++;
-	        // block if the queue is full
+	        		// block if the queue is full
 					queue.put(new Line(line, lineCount, file.getName()));
 				}
 			}

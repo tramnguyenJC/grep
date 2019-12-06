@@ -23,12 +23,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.lang.*;
 
 @Command(name = "grep", mixinStandardHelpOptions = true, version = "Grep 1.0")
 public class Grep implements Runnable {
 
-  // @TODO: Implement more options as listed on http://man7.org/linux/man-pages/man1/grep.1.html
-  //        or https://www.geeksforgeeks.org/grep-command-in-unixlinux/
+  	// @TODO: Implement more options as listed on http://man7.org/linux/man-pages/man1/grep.1.html
+ 	//        or https://www.geeksforgeeks.org/grep-command-in-unixlinux/
 	@Option(names = { "-nthreads", "--nt" }, defaultValue = "1",
 		description = "The number of threads used to execute the grep command in parallel. " +
 		"Defaults to ${DEFAULT-VALUE} if not specified.")
@@ -41,6 +42,7 @@ public class Grep implements Runnable {
 	private File[] inputFiles;
 
 	public void run() {
+		long startTime = System.currentTimeMillis();
 		LinkedBlockingQueue<Line> queue = new LinkedBlockingQueue<Line>();
 		try {
 			// Create a thread pool for the IOThread plus the processing thread(s)
@@ -49,19 +51,23 @@ public class Grep implements Runnable {
 				service.submit(new LineProcessingThread(queue, pattern));
 			}
 
-	    // Wait til IOThread completes
+	    	// Wait til IOThread completes
 			service.submit(new IOThread(queue, inputFiles)).get();
-	    service.shutdownNow();  // interrupt any LineProcessingThread
+	    	service.shutdownNow();  // interrupt any LineProcessingThread
 
-	    // Wait til LineProcessingThread terminate
-	    service.awaitTermination(365, TimeUnit.DAYS);
-	  } catch (Exception e) {
-	  	e.printStackTrace();
-	  }
+	    	// Wait til LineProcessingThread terminate
+	    	service.awaitTermination(365, TimeUnit.DAYS);
+	  	} catch (Exception e) {
+	  		e.printStackTrace();
+	  	}
+	  	long endTime = System.currentTimeMillis();
+	  	System.out.println("The number of processors: " + numThreads);
+	  	System.out.println("The time it takes to process file(s) (in milliseconds): " 
+	  		+ (endTime - startTime));
 	}
 
 	public static void main(String[] args) {
-	  int exitCode = new CommandLine(new Grep()).execute(args);
-	  System.exit(exitCode);
+		int exitCode = new CommandLine(new Grep()).execute(args);
+	  	System.exit(exitCode);
 	}
 }
