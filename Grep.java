@@ -19,10 +19,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import java.io.File;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.lang.*;
 import java.util.ArrayList;
 
@@ -31,11 +27,38 @@ public class Grep implements Runnable {
 
   	// @TODO: Implement more options as listed on http://man7.org/linux/man-pages/man1/grep.1.html
  	//        or https://www.geeksforgeeks.org/grep-command-in-unixlinux/
-	@Option(names = { "-nthreads", "--nt" }, defaultValue = "1",
+	@Option(names = { "-nt" }, defaultValue = "1",
 		description = "The number of threads used to execute the grep command in parallel. " +
-		"Defaults to ${DEFAULT-VALUE} if not specified.")
+		"Defaults to ${DEFAULT-VALUE} if not specified. This option is nly applicable if " +
+		"there are more than one file to process.")
 	private int numThreads = 1;
-  
+
+	// @Option(names = {"-c"},
+	// 	description = "This prints only a count of the lines that match a pattern")
+	// private boolean printCountOnly = false;
+
+	@Option(names = {"-h"},
+		description = "Display the matched lines, but do not display the filenames. " +
+		              "This is the default when there is only one file to search. ")
+	private boolean printMatchedLinesWithoutFileName = false;
+
+	@Option(names = {"-H"},
+		description = "Display the matched lines with the filenames. This is the default "
+		            + "when there are more than one files to search. ")
+	private boolean printMatchedLinesWithFileName= false;
+
+	@Option(names = {"-noop"},
+		description = "Display no output (for testing purposes).")
+	private boolean noOutput;
+
+	@Option(names = {"-i"},
+		description = "Ignore cases for matching.")
+	private boolean ignoreCases= false;
+
+	@Option(names = {"-l"},
+		description = "Displays list of filenames only.")
+	private boolean fileNameOnly= false;
+
 	@Parameters(index = "0", paramLabel = "PATTERN", description = "Pattern to find.")
 	private String pattern;
 
@@ -57,7 +80,8 @@ public class Grep implements Runnable {
 		}
 	}
 
-	private void processFiles(ArrayList<File> files) {
+	private void processFiles(ArrayList<File> files,
+		GrepOptions options) {
 		int[] startIndices = new int[numThreads];
 		int[] endIndices = new int[numThreads];
 		int blockSize = files.size()/numThreads;
@@ -77,8 +101,9 @@ public class Grep implements Runnable {
 			Thread[] threads = new Thread[numThreads];
 			for (int threadId = 0; threadId < numThreads; threadId++) {
 				Thread thread = new Thread(
-					new LineProcessingThread(files, pattern,
-						startIndices[threadId], endIndices[threadId])); 
+					new LineProcessingThread(threadId, files, pattern,
+						startIndices[threadId], endIndices[threadId],
+						options)); 
 				threads[threadId] = thread;
             	thread.start(); 
 			}
@@ -91,19 +116,35 @@ public class Grep implements Runnable {
 	}
 
 	public void run() {
+		GrepOptions options = new GrepOptions(printMatchedLinesWithoutFileName,
+			printMatchedLinesWithFileName, noOutput, ignoreCases, fileNameOnly);
 		long startTime = System.currentTimeMillis();
 		ArrayList<File> filesToProcess = new ArrayList<>();
 		// Populate 'filesToProcess' with all files in directory.
 		for (File file : inputFilesOrDirectories) {
 			getFilesToProcess(file, filesToProcess);
 		}
-		processFiles(filesToProcess);
+		if (filesToProcess.size() > 1) {
+			// If this option is unset by user, then by default we print matched
+			// lines with file names if there are more than one files to search.
+			if (!printMatchedLinesWithFileName) {
+				printMatchedLinesWithFileName = true;
+			}
+		} else if (filesToProcess.size() == 1) {
+			numThreads = filesToProcess.size();
+			// If this option is unset by user, then by default we print matched
+			// lines without file names if there is only one file to search.
+			if (!printMatchedLinesWithoutFileName) {
+				printMatchedLinesWithoutFileName = true;
+			}
+		}
+		processFiles(filesToProcess, options);
 
 	  	long endTime = System.currentTimeMillis();
-	  	System.out.println("The number of file(s) to process: " + filesToProcess.size());
-	  	System.out.println("The number of processors: " + numThreads);
-	  	System.out.println("The time it takes to process file(s) (in milliseconds): " 
-	  		+ (endTime - startTime));
+	  	// System.out.println("The number of file(s) to process: " + filesToProcess.size());
+	  	// System.out.println("The number of processors: " + numThreads);
+	  	// System.out.println("The time it takes to process file(s) (in milliseconds): " 
+	  	// 	+ (endTime - startTime));
 	}
 
 	public static void main(String[] args) {
