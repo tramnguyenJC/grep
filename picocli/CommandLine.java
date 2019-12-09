@@ -3286,7 +3286,7 @@ public class CommandLine {
      *     &#064;Option(names = { "-v", "--verbose"}, description = "Verbose mode. Helpful for troubleshooting. Multiple -v options increase the verbosity.")
      *     private boolean[] verbose;
      *
-     *     &#064;Option(names = { "-h", "--help", "-?", "-help"}, usageHelp = true, description = "Display this help and exit")
+     *     &#064;Option(names = { "--help", "-?", "-help"}, usageHelp = true, description = "Display this help and exit")
      *     private boolean help;
      * }
      * </pre>
@@ -12512,7 +12512,7 @@ public class CommandLine {
     static class AutoHelpMixin {
         private static final String KEY = "mixinStandardHelpOptions";
 
-        @Option(names = {"${picocli.help.name.0:--h}", "${picocli.help.name.1:---help}"}, usageHelp = true, descriptionKey = "mixinStandardHelpOptions.help",
+        @Option(names = {"${picocli.help.name.1:---help}"}, usageHelp = true, descriptionKey = "mixinStandardHelpOptions.help",
                 description = "Show this help message and exit.")
         private boolean helpRequested;
 
