@@ -1,12 +1,12 @@
 Args,Number of files,Number of threads,Sample size,Average processing time (in milliseconds)
-and indefinitely directed test_input_10 -nt 1 -noop,10,1,10,240
-and indefinitely directed test_input_10 -nt 2 -noop,10,2,10,86
-and indefinitely directed test_input_10 -nt 3 -noop,10,3,10,75
-and indefinitely directed test_input_10 -nt 4 -noop,10,4,10,75
-and indefinitely directed test_input_10 -nt 5 -noop,10,5,10,66
-and indefinitely directed test_input_10 -nt 6 -noop,10,6,10,68
-and indefinitely directed test_input_10 -nt 7 -noop,10,7,10,67
-and indefinitely directed test_input_10 -nt 8 -noop,10,8,10,65
-and indefinitely directed test_input_10 -nt 9 -noop,10,9,10,66
-and indefinitely directed test_input_10 -nt 10 -noop,10,10,10,63
+and indefinitely directed test_input_10 -nt 1 -noop,10,1,10,226
+and indefinitely directed test_input_10 -nt 2 -noop,10,2,10,83
+and indefinitely directed test_input_10 -nt 3 -noop,10,3,10,79
+and indefinitely directed test_input_10 -nt 4 -noop,10,4,10,79
+and indefinitely directed test_input_10 -nt 5 -noop,10,5,10,73
+and indefinitely directed test_input_10 -nt 6 -noop,10,6,10,71
+and indefinitely directed test_input_10 -nt 7 -noop,10,7,10,76
+and indefinitely directed test_input_10 -nt 8 -noop,10,8,10,70
+and indefinitely directed test_input_10 -nt 9 -noop,10,9,10,72
+and indefinitely directed test_input_10 -nt 10 -noop,10,10,10,68
 

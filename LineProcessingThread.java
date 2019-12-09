@@ -42,12 +42,7 @@ public class LineProcessingThread implements Runnable {
         String line;
         while ((line = br.readLine()) != null) {
           lineCount++;
-          boolean matched = line.contains(pattern);
-          if (!matched) {
-            matched = (options.ignoreCases && 
-              line.toLowerCase().contains(pattern.toLowerCase()));
-          }
-          if (matched) {
+          if (matchPattern(line, pattern)) {
             matchingLines.add(new Line(line, lineCount, file.getName()));
           }
         }
@@ -67,7 +62,18 @@ public class LineProcessingThread implements Runnable {
     }
   }
 
-  public void printMatchingLines(ArrayList<Line> matchingLines) {
+  private boolean matchPattern(String line, String pattern) {
+    if (line.contains(pattern)) {
+      return true;
+    }
+    if (options.ignoreCases && 
+        line.toLowerCase().contains(pattern.toLowerCase())) {
+      return true;
+    }
+    return false;
+  }
+
+  private void printMatchingLines(ArrayList<Line> matchingLines) {
     if (options.noOutput) {
       return;
     }
