@@ -68,22 +68,23 @@ public class LineProcessingThread implements Runnable {
   }
 
   public void printMatchingLines(ArrayList<Line> matchingLines) {
-    if (!options.noOutput) {
-      HashSet<String> fileNames = new HashSet<>();
-      for (Line line : matchingLines) {
-        if (options.printMatchedLinesWithoutFileName) {
-          System.out.println(line.getLineNumber() + ": " + line.getContent());
-        } else if (options.fileNameOnly) {
-          fileNames.add(line.getFileName());
-        } else if (options.printMatchedLinesWithFileName) {
-          System.out.println(line.getFileName() + ": " + line.getLineNumber()
-           + " " + line.getContent());
-        }
+    if (options.noOutput) {
+      return;
+    }
+    HashSet<String> fileNames = new HashSet<>();
+    for (Line line : matchingLines) {
+      if (options.printMatchedLinesWithoutFileName) {
+        System.out.println(line.getLineNumber() + ": " + line.getContent());
+      } else if (options.fileNameOnly) {
+        fileNames.add(line.getFileName());
+      } else if (options.printMatchedLinesWithFileName) {
+        System.out.println(line.getFileName() + ": " + line.getLineNumber()
+         + " " + line.getContent());
       }
-      if (options.fileNameOnly) {
-        for (String fileName : fileNames) {
-          System.out.println(fileName);
-        }
+    }
+    if (options.fileNameOnly) {
+      for (String fileName : fileNames) {
+        System.out.println(fileName);
       }
     }
   }
