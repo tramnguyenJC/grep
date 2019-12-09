@@ -124,6 +124,9 @@ public class Grep implements Runnable {
 		for (File file : inputFilesOrDirectories) {
 			getFilesToProcess(file, filesToProcess);
 		}
+		if (numThreads > filesToProcess.size()) {
+			numThreads = filesToProcess.size();
+		}
 		if (filesToProcess.size() > 1) {
 			// If this option is unset by user, then by default we print matched
 			// lines with file names if there are more than one files to search.
@@ -131,7 +134,6 @@ public class Grep implements Runnable {
 				printMatchedLinesWithFileName = true;
 			}
 		} else if (filesToProcess.size() == 1) {
-			numThreads = filesToProcess.size();
 			// If this option is unset by user, then by default we print matched
 			// lines without file names if there is only one file to search.
 			if (!printMatchedLinesWithoutFileName) {

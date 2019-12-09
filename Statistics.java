@@ -7,15 +7,15 @@ public class Statistics {
 	private static final String COMMAND_STARTER = "java Grep";
 	private static final String PATTERN = "and indefinitely directed";
 
-	private static final int MAX_NUM_THREADS = 10;
+	private static final int MAX_NUM_THREADS = 20;
 
 	private static final int SAMPLE_SIZE = 10;
 
 	private static final HashMap<Integer, String> TEST_FOLDER_SIZE_TO_NAME = new HashMap<>();
 
     static {
-        TEST_FOLDER_SIZE_TO_NAME.put(10, "test_input_10");
-        // TEST_FOLDER_SIZE_TO_NAME.put(100, "test_input_100");
+        // TEST_FOLDER_SIZE_TO_NAME.put(10, "test_input_10");
+        TEST_FOLDER_SIZE_TO_NAME.put(100, "test_input_100");
         // TEST_FOLDER_SIZE_TO_NAME.put(250, "test_input_250");
     }
 

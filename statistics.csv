@@ -1,12 +1,22 @@
 Args,Number of files,Number of threads,Sample size,Average processing time (in milliseconds)
-and indefinitely directed test_input_10 -nt 1 -noop,10,1,10,226
-and indefinitely directed test_input_10 -nt 2 -noop,10,2,10,83
-and indefinitely directed test_input_10 -nt 3 -noop,10,3,10,79
-and indefinitely directed test_input_10 -nt 4 -noop,10,4,10,79
-and indefinitely directed test_input_10 -nt 5 -noop,10,5,10,73
-and indefinitely directed test_input_10 -nt 6 -noop,10,6,10,71
-and indefinitely directed test_input_10 -nt 7 -noop,10,7,10,76
-and indefinitely directed test_input_10 -nt 8 -noop,10,8,10,70
-and indefinitely directed test_input_10 -nt 9 -noop,10,9,10,72
-and indefinitely directed test_input_10 -nt 10 -noop,10,10,10,68
+and indefinitely directed test_input_100 -nt 1 -noop,100,1,10,1463
+and indefinitely directed test_input_100 -nt 2 -noop,100,2,10,869
+and indefinitely directed test_input_100 -nt 3 -noop,100,3,10,913
+and indefinitely directed test_input_100 -nt 4 -noop,100,4,10,1239
+and indefinitely directed test_input_100 -nt 5 -noop,100,5,10,1016
+and indefinitely directed test_input_100 -nt 6 -noop,100,6,10,786
+and indefinitely directed test_input_100 -nt 7 -noop,100,7,10,723
+and indefinitely directed test_input_100 -nt 8 -noop,100,8,10,762
+and indefinitely directed test_input_100 -nt 9 -noop,100,9,10,685
+and indefinitely directed test_input_100 -nt 10 -noop,100,10,10,917
+and indefinitely directed test_input_100 -nt 11 -noop,100,11,10,775
+and indefinitely directed test_input_100 -nt 12 -noop,100,12,10,639
+and indefinitely directed test_input_100 -nt 13 -noop,100,13,10,654
+and indefinitely directed test_input_100 -nt 14 -noop,100,14,10,701
+and indefinitely directed test_input_100 -nt 15 -noop,100,15,10,898
+and indefinitely directed test_input_100 -nt 16 -noop,100,16,10,963
+and indefinitely directed test_input_100 -nt 17 -noop,100,17,10,821
+and indefinitely directed test_input_100 -nt 18 -noop,100,18,10,845
+and indefinitely directed test_input_100 -nt 19 -noop,100,19,10,846
+and indefinitely directed test_input_100 -nt 20 -noop,100,20,10,631
 
