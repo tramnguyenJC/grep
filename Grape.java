@@ -27,7 +27,7 @@ public class Grape implements Runnable {
 
   	// @TODO: Implement more options as listed on http://man7.org/linux/man-pages/man1/grep.1.html
  	//        or https://www.geeksforgeeks.org/grep-command-in-unixlinux/
-	@Option(names = { "-nt" }, defaultValue = "1",
+	@Option(names = { "-num-grapes" }, defaultValue = "1",
 		description = "The number of threads used to execute the grep command in parallel. " +
 		"Defaults to ${DEFAULT-VALUE} if not specified. This option is nly applicable if " +
 		"there are more than one file to process.")
