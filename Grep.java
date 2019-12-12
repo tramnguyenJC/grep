@@ -116,8 +116,6 @@ public class Grep implements Runnable {
 	}
 
 	public void run() {
-		GrepOptions options = new GrepOptions(printMatchedLinesWithoutFileName,
-			printMatchedLinesWithFileName, noOutput, ignoreCases, fileNameOnly);
 		long startTime = System.currentTimeMillis();
 		ArrayList<File> filesToProcess = new ArrayList<>();
 		// Populate 'filesToProcess' with all files in directory.
@@ -144,6 +142,8 @@ public class Grep implements Runnable {
 				printMatchedLinesWithoutFileName = true;
 			}
 		}
+		GrepOptions options = new GrepOptions(printMatchedLinesWithoutFileName,
+			printMatchedLinesWithFileName, noOutput, ignoreCases, fileNameOnly);
 		processFiles(filesToProcess, options);
 
 	  	long endTime = System.currentTimeMillis();
