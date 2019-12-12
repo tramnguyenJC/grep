@@ -9,7 +9,7 @@ public class GrepOptions
 	public GrepOptions(boolean printMatchedLinesWithoutFileName, boolean printMatchedLinesWithFileName,
 		boolean noOutput, boolean ignoreCases, boolean fileNameOnly) {
 		this.printMatchedLinesWithFileName = printMatchedLinesWithFileName;
-		this.printMatchedLinesWithFileName = printMatchedLinesWithFileName;
+		this.printMatchedLinesWithoutFileName = printMatchedLinesWithoutFileName;
 		this.noOutput = noOutput;
 		this.ignoreCases = ignoreCases;
 		this.fileNameOnly = fileNameOnly;
