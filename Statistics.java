@@ -4,7 +4,7 @@ import picocli.CommandLine;
 
 public class Statistics {
 
-	private static final String COMMAND_STARTER = "java Grep";
+	private static final String COMMAND_STARTER = "java Grape";
 	private static final String PATTERN = "and indefinitely directed";
 
 	private static final int MAX_NUM_THREADS = 50;
@@ -20,11 +20,11 @@ public class Statistics {
         TEST_FOLDER_SIZE_TO_NAME.put(250, "test_input_500");
     }
 
-    private static long getAverageGrepTime(String[] args) {
+    private static long getAverageGrapeTime(String[] args) {
     	long sumProcessingTime = 0;
     	for (int i = 0; i < SAMPLE_SIZE; i++) {
     		long startTime = System.currentTimeMillis();
-    		int exitCode = new CommandLine(new Grep()).execute(args);
+    		int exitCode = new CommandLine(new Grape()).execute(args);
 			long endTime = System.currentTimeMillis();
 			sumProcessingTime += (endTime - startTime);
 		}
@@ -51,7 +51,7 @@ public class Statistics {
 				String[] argsCommand = {PATTERN, directoryName, "-nt", numThreads + "", "-noop"};
 				String argsStr = String.join(" ", Arrays.asList(argsCommand));
 				System.out.println("Processing command: " + argsStr);
-				long processingTime = getAverageGrepTime(argsCommand);
+				long processingTime = getAverageGrapeTime(argsCommand);
 				List<String> rowData = Arrays.asList(argsStr, numFilesToProcess + "", 
 					numThreads + "", SAMPLE_SIZE + "", processingTime + "");
 				csvWriter.append(String.join(",", rowData));

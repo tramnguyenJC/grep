@@ -1,4 +1,4 @@
-public class GrepOptions
+public class GrapeOptions
 {
 	public boolean printMatchedLinesWithoutFileName;
 	public boolean printMatchedLinesWithFileName;
@@ -6,7 +6,7 @@ public class GrepOptions
 	public boolean ignoreCases;
 	public boolean fileNameOnly;
 
-	public GrepOptions(boolean printMatchedLinesWithoutFileName, boolean printMatchedLinesWithFileName,
+	public GrapeOptions(boolean printMatchedLinesWithoutFileName, boolean printMatchedLinesWithFileName,
 		boolean noOutput, boolean ignoreCases, boolean fileNameOnly) {
 		this.printMatchedLinesWithFileName = printMatchedLinesWithFileName;
 		this.printMatchedLinesWithoutFileName = printMatchedLinesWithoutFileName;

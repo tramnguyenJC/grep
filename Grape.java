@@ -7,11 +7,11 @@ that helps make processing command line options and parameters become easier.
 Read more about picocli here: https://picocli.info/
 
 To compile this program run:
-	javac Grep.java
+	javac Grape.java
 To learn about the options and parameters to execute this grep, run:
-  java Grep --help
-Example to find the word 'picocli' in Grep.java, using 2 threads:
-  java Grep --nt 2 picocli Grep.java
+  java Grape --help
+Example to find the word 'picocli' in Grape.java, using 2 threads:
+  java Grape --nt 2 picocli Grape.java
 */
 
 import picocli.CommandLine;
@@ -22,8 +22,8 @@ import java.io.File;
 import java.lang.*;
 import java.util.ArrayList;
 
-@Command(name = "grep", mixinStandardHelpOptions = true, version = "Grep 1.0")
-public class Grep implements Runnable {
+@Command(name = "grep", mixinStandardHelpOptions = true, version = "Grape Final Version")
+public class Grape implements Runnable {
 
   	// @TODO: Implement more options as listed on http://man7.org/linux/man-pages/man1/grep.1.html
  	//        or https://www.geeksforgeeks.org/grep-command-in-unixlinux/
@@ -81,7 +81,7 @@ public class Grep implements Runnable {
 	}
 
 	private void processFiles(ArrayList<File> files,
-		GrepOptions options) {
+		GrapeOptions options) {
 		int[] startIndices = new int[numThreads];
 		int[] endIndices = new int[numThreads];
 		int blockSize = files.size()/numThreads;
@@ -142,7 +142,7 @@ public class Grep implements Runnable {
 				printMatchedLinesWithoutFileName = true;
 			}
 		}
-		GrepOptions options = new GrepOptions(printMatchedLinesWithoutFileName,
+		GrapeOptions options = new GrapeOptions(printMatchedLinesWithoutFileName,
 			printMatchedLinesWithFileName, noOutput, ignoreCases, fileNameOnly);
 		processFiles(filesToProcess, options);
 
@@ -154,7 +154,7 @@ public class Grep implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		int exitCode = new CommandLine(new Grep()).execute(args);
+		int exitCode = new CommandLine(new Grape()).execute(args);
 	  	System.exit(exitCode);
 	}
 }

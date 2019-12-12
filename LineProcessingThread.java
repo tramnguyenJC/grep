@@ -17,11 +17,11 @@ public class LineProcessingThread implements Runnable {
 	private final String pattern;
   private final int startIdx;
   private final int endIdx;
-  private final GrepOptions options;
+  private final GrapeOptions options;
 
 	public LineProcessingThread(int _threadId, ArrayList<File> _filesToProcess,
                               String _pattern, int _startIdx, int _endIdx,
-                              GrepOptions _options) {
+                              GrapeOptions _options) {
     threadId = _threadId;
 		filesToProcess = _filesToProcess;
 		pattern = _pattern;
