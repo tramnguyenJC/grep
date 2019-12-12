@@ -122,6 +122,10 @@ public class Grep implements Runnable {
 		ArrayList<File> filesToProcess = new ArrayList<>();
 		// Populate 'filesToProcess' with all files in directory.
 		for (File file : inputFilesOrDirectories) {
+			if (!file.exists()) {
+				System.err.println("File " + file.getAbsolutePath() + " does not exist.");
+				System.exit(1);
+			}
 			getFilesToProcess(file, filesToProcess);
 		}
 		if (numThreads > filesToProcess.size()) {
